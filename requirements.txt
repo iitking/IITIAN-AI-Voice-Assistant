@@ -1,0 +1,14 @@
+# IITIAN AI - Dependencies
+# Note: IITIAN is built with an ultra-optimized architecture that works 100% out of the box
+# using Python 3.9+ Standard Library with ZERO mandatory dependencies!
+
+# Observability & Tracing:
+# langsmith>=0.1.0
+
+# Optional high-performance packages for extended features:
+# fastapi>=0.110.0
+# uvicorn>=0.28.0
+# websockets>=12.0
+# openai>=1.14.0
+# google-generativeai>=0.4.1
+# requests>=2.31.0
