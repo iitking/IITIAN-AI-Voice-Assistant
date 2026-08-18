@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IITIAN — Your Personal AI Voice Assistant</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Top Navigation Bar -->
+    <header class="top-nav">
+      <div class="brand">
+        <div class="brand-logo">
+          <span class="logo-core"></span>
+          <span class="logo-pulse"></span>
+        </div>
+        <div class="brand-text">
+          <h1>IITIAN <span class="badge">AI AGENT</span></h1>
+          <p class="tagline">Personal Real-Time Voice Operating Layer</p>
+        </div>
+      </div>
+
+      <div class="nav-controls">
+        <div class="status-indicator online" id="statusIndicator">
+          <span class="dot"></span>
+          <span class="status-label" id="statusLabel">ONLINE</span>
+        </div>
+
+        <div class="battery-chip" id="topBatteryChip" title="System Battery">
+          <span class="battery-icon">⚡</span>
+          <span id="topBatteryText">--%</span>
+        </div>
+
+        <button class="icon-btn" id="wakeWordToggleBtn" title="Hands-free Wake Word Detection">
+          <span class="mic-status-icon">👂</span>
+          <span class="btn-text">Wake Word: <b id="wakeWordStatusText">ON</b></span>
+        </button>
+
+        <button class="icon-btn" id="soundToggleBtn" title="Toggle Voice Output">
+          <span id="soundIcon">🔊</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace Grid -->
+    <main class="main-content">
+      
+      <!-- Left Column: The Central Voice Orb & Quick Actions -->
+      <section class="orb-section">
+        <div class="orb-container">
+          <div class="pulse-ring ring-1"></div>
+          <div class="pulse-ring ring-2"></div>
+          <div class="pulse-ring ring-3"></div>
+          
+          <div class="voice-orb" id="voiceOrb">
+            <div class="orb-inner"></div>
+            <div class="orb-glow"></div>
+            <div class="orb-particles"></div>
+          </div>
+        </div>
+
+        <div class="orb-status-container">
+          <div class="status-pill" id="agentStateText">Ready & Listening</div>
+          <div class="transcription-preview" id="liveTranscript">"Hey IITIAN, kal subah 7 baje ka alarm laga do"</div>
+        </div>
+
+        <!-- Audio Waveform Visualizer -->
+        <div class="visualizer-container" id="visualizer">
+          <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+          <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+          <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+          <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+          <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+        </div>
+
+        <!-- Voice Control Buttons -->
+        <div class="voice-controls">
+          <button class="primary-voice-btn" id="micBtn" title="Click or Press Spacebar to Talk">
+            <svg class="mic-svg" viewBox="0 0 24 24" width="28" height="28">
+              <path fill="currentColor" d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+              <path fill="currentColor" d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+            </svg>
+            <span class="btn-label" id="micBtnLabel">Push to Talk</span>
+          </button>
+        </div>
+
+        <!-- Suggestion Pills -->
+        <div class="suggestions-wrapper">
+          <div class="suggestions-title">Try speaking or clicking:</div>
+          <div class="suggestions-grid">
+            <button class="pill-btn" onclick="sendSuggestion('Kal subah 7 baje ka alarm laga do')">⏰ 7 AM Alarm</button>
+            <button class="pill-btn" onclick="sendSuggestion('Set a 5 minute timer')">⏱️ 5m Timer</button>
+            <button class="pill-btn" onclick="sendSuggestion('Papa ko call lagao')">📞 Call Papa</button>
+            <button class="pill-btn" onclick="sendSuggestion('Papa ko message karo ki main 8 baje ghar aaunga')">💬 WhatsApp Papa</button>
+            <button class="pill-btn" onclick="sendSuggestion('Jaipur me mausam kaisa hai?')">🌦️ Weather</button>
+            <button class="pill-btn" onclick="sendSuggestion('Calculate 250 multiplied by 48')">🧮 250 × 48</button>
+            <button class="pill-btn" onclick="sendSuggestion('Open VS Code')">💻 Open VS Code</button>
+            <button class="pill-btn" onclick="sendSuggestion('Mera laptop price predictor project open karo')">📂 Open Project</button>
+            <button class="pill-btn" onclick="sendSuggestion('Check battery status')">🔋 Battery Status</button>
+            <button class="pill-btn" onclick="sendSuggestion('Tomorrow wake me up at 7 AM, check weather in Jaipur, and remind me to email professor at 10 AM')">🚀 Multi-Step Plan</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Multi-tab Assistant Intelligence Console -->
+      <section class="console-section">
+        <div class="tabs-header">
+          <button class="tab-btn active" data-tab="chat">💬 Conversation</button>
+          <button class="tab-btn" data-tab="planner">🧠 Agent Plan</button>
+          <button class="tab-btn" data-tab="alarms">⏰ Alarms & Timers</button>
+          <button class="tab-btn" data-tab="reminders">🔔 Reminders & Calendar</button>
+          <button class="tab-btn" data-tab="contacts">📞 Contacts</button>
+          <button class="tab-btn" data-tab="system">🖥️ System Hub</button>
+          <button class="tab-btn" data-tab="memory">💾 Memory</button>
+        </div>
+
+        <div class="tabs-body">
+          
+          <!-- TAB 1: Chat & Conversation History -->
+          <div class="tab-pane active" id="pane-chat">
+            <div class="chat-messages" id="chatMessages">
+              <div class="msg-bubble assistant">
+                <div class="msg-author">🤖 IITIAN AI</div>
+                <div class="msg-text">
+                  Namaste Nivesh! I am <b>IITIAN</b>, your personal Agentic Voice Assistant. 
+                  <br>I can control your apps, set alarms, manage calls, schedule reminders, check weather, and run multi-step actions. 
+                  <br><br>Speak naturally or type a command below!
+                </div>
+                <div class="msg-time">Just now</div>
+              </div>
+            </div>
+
+            <div class="chat-input-bar">
+              <input type="text" id="textInput" placeholder="Type a command or speak (e.g. 'Papa ko call lagao', 'Open Chrome')..." autocomplete="off">
+              <button class="send-btn" id="sendBtn">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                  <path fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB 2: Agent Planner & Multi-Step Reasoning -->
+          <div class="tab-pane" id="pane-planner">
+            <div class="planner-card">
+              <div class="pane-header">
+                <h3>Agentic Decomposition & Execution Graph</h3>
+                <span class="badge" id="planBadge">Ready</span>
+              </div>
+              <p class="pane-desc">IITIAN automatically breaks down complex natural language queries into sequential or conditional tool calls.</p>
+              
+              <div class="plan-steps-container" id="plannerSteps">
+                <div class="empty-state">No multi-step plans executed yet. Try saying: <i>"Tomorrow wake me up at 7 AM, check the weather, and remind me to email my professor at 10 AM"</i></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 3: Alarms & Timers -->
+          <div class="tab-pane" id="pane-alarms">
+            <div class="panel-card">
+              <div class="pane-header">
+                <h3>Active Alarms & Countdown Timers</h3>
+                <button class="small-btn" onclick="openNewAlarmPrompt()">+ Set Alarm</button>
+              </div>
+
+              <div class="grid-2-col">
+                <div>
+                  <h4 class="subhead">⏰ Alarms</h4>
+                  <div class="items-list" id="alarmsList">
+                    <div class="empty-state">Loading alarms...</div>
+                  </div>
+                </div>
+                <div>
+                  <h4 class="subhead">⏱️ Active Timers</h4>
+                  <div class="items-list" id="timersList">
+                    <div class="empty-state">No timers running.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 4: Reminders & Calendar -->
+          <div class="tab-pane" id="pane-reminders">
+            <div class="panel-card">
+              <div class="pane-header">
+                <h3>Tasks, Reminders & Calendar</h3>
+                <button class="small-btn" onclick="openNewReminderPrompt()">+ Add Reminder</button>
+              </div>
+
+              <div class="grid-2-col">
+                <div>
+                  <h4 class="subhead">🔔 Reminders & Tasks</h4>
+                  <div class="items-list" id="remindersList">
+                    <div class="empty-state">Loading reminders...</div>
+                  </div>
+                </div>
+                <div>
+                  <h4 class="subhead">📅 Calendar Meetings</h4>
+                  <div class="items-list" id="calendarList">
+                    <div class="empty-state">Loading calendar events...</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 5: Contacts -->
+          <div class="tab-pane" id="pane-contacts">
+            <div class="panel-card">
+              <div class="pane-header">
+                <h3>Voice Address Book</h3>
+                <button class="small-btn" onclick="openNewContactPrompt()">+ Add Contact</button>
+              </div>
+              <p class="pane-desc">Contacts accessible by voice command ("Call Papa", "WhatsApp Rahul").</p>
+              <div class="contacts-grid" id="contactsGrid">
+                <div class="empty-state">Loading contacts...</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 6: System Automation Hub -->
+          <div class="tab-pane" id="pane-system">
+            <div class="panel-card">
+              <div class="pane-header">
+                <h3>Desktop & macOS Automation Hub</h3>
+              </div>
+              
+              <div class="system-grid">
+                <!-- Battery Card -->
+                <div class="sys-card">
+                  <div class="sys-card-title">🔋 Battery Status</div>
+                  <div class="sys-card-value" id="sysBatteryVal">--%</div>
+                  <div class="sys-card-desc" id="sysBatteryDesc">Checking...</div>
+                </div>
+
+                <!-- Volume Card -->
+                <div class="sys-card">
+                  <div class="sys-card-title">🔊 Master Volume</div>
+                  <input type="range" min="0" max="100" value="50" class="slider" id="volumeSlider" onchange="adjustVolume(this.value)">
+                  <div class="sys-card-desc"><span id="volumeValText">50</span>%</div>
+                </div>
+
+                <!-- Quick App Launchers -->
+                <div class="sys-card full-width">
+                  <div class="sys-card-title">🚀 Fast App Launcher</div>
+                  <div class="app-buttons-row">
+                    <button class="app-btn" onclick="sendSuggestion('Open Chrome')">🌐 Chrome</button>
+                    <button class="app-btn" onclick="sendSuggestion('Open VS Code')">💻 VS Code</button>
+                    <button class="app-btn" onclick="sendSuggestion('Open Terminal')">⬛ Terminal</button>
+                    <button class="app-btn" onclick="sendSuggestion('Open Spotify')">🎵 Spotify</button>
+                    <button class="app-btn" onclick="sendSuggestion('Open Calculator')">🧮 Calculator</button>
+                  </div>
+                </div>
+
+                <!-- Quick Tools -->
+                <div class="sys-card full-width">
+                  <div class="sys-card-title">⚡ Quick Desktop Actions</div>
+                  <div class="app-buttons-row">
+                    <button class="app-btn" onclick="sendSuggestion('Take a screenshot')">📸 Screenshot</button>
+                    <button class="app-btn" onclick="sendSuggestion('Mera laptop price predictor project open karo')">📁 Find My Project</button>
+                    <button class="app-btn" onclick="sendSuggestion('Search latest AI developments')">🌍 Web Search</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 7: Memory Bank -->
+          <div class="tab-pane" id="pane-memory">
+            <div class="panel-card">
+              <div class="pane-header">
+                <h3>Long-Term Memory Bank</h3>
+                <button class="small-btn" onclick="openNewMemoryPrompt()">+ Add Memory</button>
+              </div>
+              <p class="pane-desc">Information IITIAN remembers about you across sessions.</p>
+              <div class="memories-table-wrap">
+                <table class="mem-table" id="memoriesTable">
+                  <thead>
+                    <tr>
+                      <th>Key</th>
+                      <th>Remembered Value</th>
+                      <th>Category</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="memoriesBody">
+                    <tr><td colspan="4" class="empty-state">Loading memories...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Notification Toast / Alarm Alert Overlay -->
+    <div class="alarm-modal" id="alarmModal">
+      <div class="alarm-modal-content">
+        <div class="alarm-bell-icon">🔔</div>
+        <h2 id="alarmModalTitle">ALARM RINGING!</h2>
+        <p id="alarmModalLabel">Wake up!</p>
+        <div class="modal-actions">
+          <button class="primary-btn" onclick="dismissAlarmModal()">Dismiss</button>
+          <button class="secondary-btn" onclick="snoozeAlarmModal()">Snooze (5m)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bottom-bar">
+      <span>Built with ❤️ for <b>Nivesh Kumar Meena</b> | IITIAN AI Voice Assistant</span>
+      <span>Press <kbd>Spacebar</kbd> or click <b>Push to Talk</b></span>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
